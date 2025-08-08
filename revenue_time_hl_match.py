@@ -21,6 +21,10 @@ fee = (
 vol["volume_usd"] = pd.to_numeric(vol["volume_usd"], errors="coerce")
 fee["fees_usd"]   = pd.to_numeric(fee["fees_usd"], errors="coerce")
 
+# Filter out August 2025 data
+vol = vol[~((vol["date"].dt.year == 2025) & (vol["date"].dt.month == 8))]
+fee = fee[~((fee["date"].dt.year == 2025) & (fee["date"].dt.month == 8))]
+
 # Aggregate to daily (sum), then reindex to daily frequency
 vol = (
     vol.groupby(vol["date"].dt.normalize(), as_index=True, sort=True)["volume_usd"]
